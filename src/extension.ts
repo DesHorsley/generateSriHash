@@ -4,44 +4,51 @@
 import * as vscode from 'vscode';
 const sriToolbox = require('sri-toolbox');
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+    console.log('Generate SRI HASH is active');
 
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "myfirstextension" is now active!');
+        let generateSriHash256 = vscode.commands.registerCommand('extension.generateSriHash256', () => {
+            let editor = vscode.window.activeTextEditor;
+            sriHash(editor, 'sha256');
+        });
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with  registerCommand
-    // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.generateSriHash', () => {
-        // TODO: add algorithms and checks
-        // The code you place here will be executed every time your command is executed
-
+    let generateSriHash384= vscode.commands.registerCommand('extension.generateSriHash384', () => {
         let editor = vscode.window.activeTextEditor;
-        if (!editor) {
-            vscode.window.showInformationMessage('Please select a valid url to hash https://www.srihash.org');
-            return; // No open text editor
-        }
-
-        let selection = editor.selection;
-        let text = editor.document.getText(selection);
-
-        sriHash(editor, editor.document, selection);
+        sriHash(editor, 'sha384');
     });
 
-    context.subscriptions.push(disposable);
+    let generateSriHash512 = vscode.commands.registerCommand('extension.generateSriHash512', () => {
+        let editor = vscode.window.activeTextEditor;
+        sriHash(editor, 'sha512');
+    });
+
+    context.subscriptions.push(generateSriHash256);
+    context.subscriptions.push(generateSriHash384);
+    context.subscriptions.push(generateSriHash512);
 }
 
-function sriHash(editor: vscode.TextEditor, document: vscode.TextDocument, selection: vscode.Selection) {
-    const uri = editor.document.getText(selection)
-    var integrity = sriToolbox.generate({
-        algorithms: ["sha384"] // TODO: Make an option for the accepted algorithms
-    }, uri);
+export function generateHash(url:string, algorithm: string) {
+    return sriToolbox.generate({
+        algorithms: [algorithm]
+    }, url);
+}
+
+export function generateScriptTag(url:string, algorithm: string) {
+    const hash = generateHash(url, algorithm);
+    return `<script src="${url}" integrity="${hash}" crossorigin="anonymous"></script>`;
+}
+
+function sriHash(editor: vscode.TextEditor | undefined, algorithm: string) {
+    if (!editor) {
+        vscode.window.showInformationMessage('Please select a valid url within a file.');
+        return;
+    }
+
+    const selection = editor.selection;
+    const url = editor.document.getText(selection)
 
     editor.edit(function(editor) {
-        editor.replace(selection, `<script src="${uri}" integrity="${integrity}" crossorigin="anonymous"></script>`);
+        editor.replace(selection, generateScriptTag(url, algorithm));
     });
 }
 

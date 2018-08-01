@@ -13,14 +13,25 @@
         "Snippets"
     ],
     "activationEvents": [
-        "onCommand:extension.generateSriHash"
+        "onCommand:extension.generateSriHash256",
+        "onCommand:extension.generateSriHash384",
+        "onCommand:extension.generateSriHash512"
+
     ],
     "main": "./out/extension",
     "contributes": {
         "commands": [
             {
-                "command": "extension.generateSriHash",
-                "title": "Generate SRI Hash"
+                "command": "extension.generateSriHash256",
+                "title": "Generate SRI Hash SHA-256"
+            },
+            {
+                "command": "extension.generateSriHash384",
+                "title": "Generate SRI Hash SHA-384"
+            },
+            {
+                "command": "extension.generateSriHash512",
+                "title": "Generate SRI Hash SHA-512"
             }
         ]
     },
