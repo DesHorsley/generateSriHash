@@ -16,7 +16,6 @@
         "onCommand:extension.generateSriHash256",
         "onCommand:extension.generateSriHash384",
         "onCommand:extension.generateSriHash512"
-
     ],
     "main": "./out/extension",
     "contributes": {
@@ -50,6 +49,13 @@
         "@types/mocha": "^2.2.42"
     },
     "dependencies": {
-        "sri-toolbox": "^0.2.0"
+        "sri-toolbox": "^0.2.0",
+        "cross-env": "^5.2.0",
+        "handlebars": "^4.0.11",
+        "handlebars-helper-sri": "0.0.0",
+        "hapi": "^16.6.3",
+        "hapi-sitemap": "^1.0.3",
+        "inert": "^4.2.1",
+        "vision": "^4.1.1"
     }
 }

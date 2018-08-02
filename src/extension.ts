@@ -1,20 +1,21 @@
-'use strict';
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 import * as vscode from 'vscode';
-const sriToolbox = require('sri-toolbox');
+const helpers = require('./helpers.js');
 
 export function activate(context: vscode.ExtensionContext) {
     console.log('Generate SRI HASH is active');
 
-        let generateSriHash256 = vscode.commands.registerCommand('extension.generateSriHash256', () => {
-            let editor = vscode.window.activeTextEditor;
-            sriHash(editor, 'sha256');
-        });
+    let generateSriHash256 = vscode.commands.registerCommand('extension.generateSriHash256', () => {
+        let editor = vscode.window.activeTextEditor;
+        sriHash(editor, 'sha256');
+    });
 
     let generateSriHash384= vscode.commands.registerCommand('extension.generateSriHash384', () => {
         let editor = vscode.window.activeTextEditor;
-        sriHash(editor, 'sha384');
+        return sriHash(editor, 'sha384');
     });
 
     let generateSriHash512 = vscode.commands.registerCommand('extension.generateSriHash512', () => {
@@ -27,14 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(generateSriHash512);
 }
 
-export function generateHash(url:string, algorithm: string) {
-    return sriToolbox.generate({
-        algorithms: [algorithm]
-    }, url);
-}
-
-export function generateScriptTag(url:string, algorithm: string) {
-    const hash = generateHash(url, algorithm);
+export function generateScriptTag(url: string, hash:string): string {
     return `<script src="${url}" integrity="${hash}" crossorigin="anonymous"></script>`;
 }
 
@@ -44,14 +38,45 @@ function sriHash(editor: vscode.TextEditor | undefined, algorithm: string) {
         return;
     }
 
-    const selection = editor.selection;
-    const url = editor.document.getText(selection)
+    vscode.window.showInformationMessage('Generating SRI Hash, one moment...');
 
-    editor.edit(function(editor) {
-        editor.replace(selection, generateScriptTag(url, algorithm));
-    });
+    let selection = editor.selection;
+    const url = editor.document.getText(selection);
+
+    const options = {
+        url: url,
+        algorithms: algorithm
+      };
+
+    // helpers.generate(options, (result:any) => {
+    //     editor = vscode.window.activeTextEditor;
+    //     if (!editor) {
+    //         return;
+    //     }
+
+    //     let selection = editor.selection;
+
+    //     editor.edit(function(editor) {
+    //         editor.replace(selection, generateScriptTag(result.url, result.integrity));
+    //     });
+    // });
+    helpers.generateElement(url, algorithm, (result:any ) => {
+        editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            return;
+        }
+
+        let selection = editor.selection;
+
+        editor.edit(function(editor) {
+            editor.replace(selection, result);
+        });
+        }
+      );
+
 }
 
 // this method is called when your extension is deactivated
 export function deactivate() {
+    console.log('Generate SRI HASH is deactivated');
 }
