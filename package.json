@@ -4,7 +4,7 @@
     "description": "Generates script tag and integrity attribute from url",
     "version": "1.0.0",
     "license": "MPL-2.0",
-    "publisher": "Des Horsley",
+    "publisher": "DesHorsley",
     "engines": {
         "vscode": "^1.25.0"
     },
@@ -57,5 +57,14 @@
         "hapi-sitemap": "^1.0.3",
         "inert": "^4.2.1",
         "vision": "^4.1.1"
-    }
+    },
+    "bugs": {
+        "url": "https://github.com/DesHorsley/generateSriHash/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DesHorsley/generateSriHash"
+    },
+    "qna": "marketplace",
+    "readme": "./README.md"
 }
