@@ -1,57 +1,29 @@
 # Generate SRI HASH
 
-This is the README for your extension "myfirstextension". After writing up a brief description, we recommend including the following sections.
-
 ## Features
+Takes a url to a .js or .css file and replaces it with a script tag including hash.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Example:  
+`https://code.jquery.com/jquery-3.3.1.min.js`  
+will become
+```html 
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  ```  
 
-For example if there is an image subfolder under your extension project workspace:
+To run the extension:
+1. Select the url
+1. Open the command palette (`Ctrl + ⇧Shift + P` windows, `⇧⌘P` mac) then start to type `Generate`
+1. You will see options for **SHA-256**, **SHA-384**, or **SHA-512**. Select one of them
+1. After a few seconds the url will be replaced inline with the script tag
 
-\!\[feature X\]\(images/feature-x.png\)
+The extension will fetch the file, then produce a hash of its contents. The time it takes to generate the hash will depend on your available bandwidth and the size of the target file. 
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+![Imgur](https://i.imgur.com/GJCRux0.gif)
 
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+This extension is based on the code running at https://www.srihash.org/
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
 ### 1.0.0
 
-Initial release of Generate SRI HASH
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Converts a url pointing to js or css into a script tag with an integrity attribute.

@@ -28,10 +28,6 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(generateSriHash512);
 }
 
-export function generateScriptTag(url: string, hash:string): string {
-    return `<script src="${url}" integrity="${hash}" crossorigin="anonymous"></script>`;
-}
-
 function sriHash(editor: vscode.TextEditor | undefined, algorithm: string) {
     if (!editor) {
         vscode.window.showInformationMessage('Please select a valid url within a file.');
@@ -43,23 +39,6 @@ function sriHash(editor: vscode.TextEditor | undefined, algorithm: string) {
     let selection = editor.selection;
     const url = editor.document.getText(selection);
 
-    const options = {
-        url: url,
-        algorithms: algorithm
-      };
-
-    // helpers.generate(options, (result:any) => {
-    //     editor = vscode.window.activeTextEditor;
-    //     if (!editor) {
-    //         return;
-    //     }
-
-    //     let selection = editor.selection;
-
-    //     editor.edit(function(editor) {
-    //         editor.replace(selection, generateScriptTag(result.url, result.integrity));
-    //     });
-    // });
     helpers.generateElement(url, algorithm, (result:any ) => {
         editor = vscode.window.activeTextEditor;
         if (!editor) {
