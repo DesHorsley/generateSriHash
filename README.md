@@ -21,9 +21,3 @@ The extension will fetch the file, then produce a hash of its contents. The time
 ![Imgur](https://i.imgur.com/GJCRux0.gif)
 
 This extension is based on the code running at https://www.srihash.org/
-
-## Release Notes
-
-### 1.0.0
-
-Converts a url pointing to js or css into a script tag with an integrity attribute.
